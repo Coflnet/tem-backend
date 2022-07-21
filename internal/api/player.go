@@ -26,7 +26,7 @@ func playerByUuid(c *gin.Context) {
 	}
 
 	var player *PlayerResponse
-	var wg *sync.WaitGroup
+	wg := sync.WaitGroup{}
 
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 
@@ -41,7 +41,7 @@ func playerByUuid(c *gin.Context) {
 		}
 
 		p.Items = items
-	}(uuid, player, wg)
+	}(uuid, player, &wg)
 
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 		waitGroup.Add(1)
@@ -56,7 +56,7 @@ func playerByUuid(c *gin.Context) {
 		p.Id = player.Id
 		p.GenericItems = player.GenericItems
 		p.GenericPets = player.GenericPets
-	}(uuid, player, wg)
+	}(uuid, player, &wg)
 
 	wg.Wait()
 	c.JSON(http.StatusOK, player)

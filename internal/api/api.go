@@ -21,7 +21,7 @@ func setupRouter() *gin.Engine {
 	r.GET("/api/tem/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	docs.SwaggerInfo.Host = "sky.coflnet.com"
-	docs.SwaggerInfo.BasePath = "/api/tem/"
+	docs.SwaggerInfo.BasePath = "/api/tem"
 	docs.SwaggerInfo.Title = "TEM Backend"
 	docs.SwaggerInfo.Version = "1.0"
 
