@@ -28,10 +28,10 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	r.GET("/api/tem/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
-	r.GET("/api/player/:uuid", playerByUuid)
-	r.GET("/api/playerProfile/:uuid", playerByProfileUuid)
+	r.GET("/api/tem/player/:uuid", playerByUuid)
+	r.GET("/api/tem/playerProfile/:uuid", playerByProfileUuid)
 
 	return r
 }
