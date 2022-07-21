@@ -48,7 +48,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse"
+                            "$ref": "#/definitions/internal_api.PlayerResponse"
                         }
                     }
                 }
