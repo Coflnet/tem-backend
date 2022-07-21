@@ -48,7 +48,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_api.PlayerResponse"
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse"
                         }
                     }
                 }
@@ -166,7 +166,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "sky.coflnet.com/tem/",
-	BasePath:         "/api/",
+	BasePath:         "/api/tem/",
 	Schemes:          []string{},
 	Title:            "TEM Backend",
 	Description:      "Some endpoints for the tem db",
