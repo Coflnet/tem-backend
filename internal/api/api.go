@@ -22,7 +22,7 @@ func StartApi() error {
 
 // @license.name AGPL v3
 
-// @host sky.coflnet.com/tem/
+// @host sky.coflnet.com
 // @BasePath /api/tem/
 func setupRouter() *gin.Engine {
 	r := gin.Default()
