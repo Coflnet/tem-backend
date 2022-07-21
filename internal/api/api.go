@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/Coflnet/tem-backend/docs"
 	_ "github.com/Coflnet/tem-backend/docs"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -13,22 +14,16 @@ func StartApi() error {
 	return r.Run()
 }
 
-// @title TEM Backend
-// @version 1.0
-// @description Some endpoints for the tem db
-
-// @contact.name Flou21
-// @contact.email muehlhans.f@coflnet.com
-
-// @license.name AGPL v3
-
-// @host sky.coflnet.com
-// @BasePath /api/tem/
 func setupRouter() *gin.Engine {
 	r := gin.Default()
 
-	url := ginSwagger.URL("https://sky.coflnet.com/api/tem/swagger/index.html") // The url pointing to API definition
+	url := ginSwagger.URL("https://sky.coflnet.com/api/tem/swagger/doc.json") // The url pointing to API definition
 	r.GET("/api/tem/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+
+	docs.SwaggerInfo.Host = "sky.coflnet.com"
+	docs.SwaggerInfo.BasePath = "/api/tem/"
+	docs.SwaggerInfo.Title = "TEM Backend"
+	docs.SwaggerInfo.Version = "1.0"
 
 	r.GET("/api/tem/player/:uuid", playerByUuid)
 	r.GET("/api/tem/playerProfile/:uuid", playerByProfileUuid)

@@ -10,13 +10,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {
-            "name": "Flou21",
-            "email": "muehlhans.f@coflnet.com"
-        },
-        "license": {
-            "name": "AGPL v3"
-        },
+        "contact": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -48,7 +42,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse"
+                            "$ref": "#/definitions/internal_api.PlayerResponse"
                         }
                     }
                 }
@@ -164,12 +158,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "sky.coflnet.com/tem/",
-	BasePath:         "/api/tem/",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "TEM Backend",
-	Description:      "Some endpoints for the tem db",
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

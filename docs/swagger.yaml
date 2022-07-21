@@ -1,4 +1,3 @@
-basePath: /api/tem/
 definitions:
   github.com_Coflnet_tem-backend_internal_api.PlayerResponse:
     properties:
@@ -68,16 +67,8 @@ definitions:
     type: object
   mongo.PlayerId:
     type: object
-host: sky.coflnet.com/tem/
 info:
-  contact:
-    email: muehlhans.f@coflnet.com
-    name: Flou21
-  description: Some endpoints for the tem db
-  license:
-    name: AGPL v3
-  title: TEM Backend
-  version: "1.0"
+  contact: {}
 paths:
   /player/{uuid}:
     get:
@@ -96,7 +87,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse'
+            $ref: '#/definitions/internal_api.PlayerResponse'
       summary: PlayerUUID
       tags:
       - player
