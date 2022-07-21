@@ -1,0 +1,103 @@
+basePath: /api/
+definitions:
+  github.com_Coflnet_tem-backend_internal_api.PlayerResponse:
+    properties:
+      generic_items:
+        items:
+          $ref: '#/definitions/mongo.GenericItem'
+        type: array
+      generic_pets:
+        items:
+          $ref: '#/definitions/mongo.GenericPet'
+        type: array
+      id:
+        $ref: '#/definitions/mongo.PlayerId'
+      items:
+        items:
+          $ref: '#/definitions/mongo.Item'
+        type: array
+    type: object
+  internal_api.PlayerResponse:
+    properties:
+      generic_items:
+        items:
+          $ref: '#/definitions/mongo.GenericItem'
+        type: array
+      generic_pets:
+        items:
+          $ref: '#/definitions/mongo.GenericPet'
+        type: array
+      id:
+        $ref: '#/definitions/mongo.PlayerId'
+      items:
+        items:
+          $ref: '#/definitions/mongo.Item'
+        type: array
+    type: object
+  mongo.GenericItem:
+    properties:
+      enchantments: {}
+      extra_attributes: {}
+      id:
+        type: string
+      item_id:
+        type: string
+      rarity:
+        type: string
+      reforge:
+        type: string
+    type: object
+  mongo.GenericPet:
+    properties:
+      candy:
+        type: integer
+      held_item:
+        type: string
+      id:
+        type: string
+      level:
+        type: integer
+      name:
+        type: string
+      rarity:
+        type: string
+      skin:
+        type: string
+    type: object
+  mongo.Item:
+    type: object
+  mongo.PlayerId:
+    type: object
+host: sky.coflnet.com/tem/
+info:
+  contact:
+    email: muehlhans.f@coflnet.com
+    name: Flou21
+  description: Some endpoints for the tem db
+  license:
+    name: AGPL v3
+  title: TEM Backend
+  version: "1.0"
+paths:
+  /player/{uuid}:
+    get:
+      consumes:
+      - application/json
+      description: get a player by his player uuid
+      parameters:
+      - description: uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse'
+      summary: PlayerUUID
+      tags:
+      - player
+swagger: "2.0"

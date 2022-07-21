@@ -1,0 +1,19 @@
+name: tem-backend
+autocreate: true
+image: golang:1.18.3-bullseye
+command: bash
+securityContext:
+  capabilities:
+    add:
+    - SYS_PTRACE
+volumes:
+- /go/pkg/
+- /root/.cache/go-build/
+sync:
+- .:/usr/src/app
+workdir: /usr/src/app
+environment:
+- SLOWDOWN_MS=10
+- MONGO_URL=mongodb://root:root@mongo.mongo:27017
+forward:
+- 8080:8080

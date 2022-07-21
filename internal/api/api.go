@@ -1,0 +1,37 @@
+package api
+
+import (
+	_ "github.com/Coflnet/tem-backend/docs"
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+)
+
+func StartApi() error {
+	r := setupRouter()
+
+	return r.Run()
+}
+
+// @title TEM Backend
+// @version 1.0
+// @description Some endpoints for the tem db
+
+// @contact.name Flou21
+// @contact.email muehlhans.f@coflnet.com
+
+// @license.name AGPL v3
+
+// @host sky.coflnet.com/tem/
+// @BasePath /api/
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+
+	r.GET("/api/player/:uuid", playerByUuid)
+	r.GET("/api/playerProfile/:uuid", playerByProfileUuid)
+
+	return r
+}
