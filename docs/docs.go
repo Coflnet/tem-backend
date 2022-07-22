@@ -47,6 +47,38 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/playerProfile/{uuid}": {
+            "get": {
+                "description": "get a player by his profile uuid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "player"
+                ],
+                "summary": "ProfileUUID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "uuid",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_api.PlayerResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

@@ -97,4 +97,25 @@ paths:
       summary: PlayerUUID
       tags:
       - player
+  /playerProfile/{uuid}:
+    get:
+      consumes:
+      - application/json
+      description: get a player by his profile uuid
+      parameters:
+      - description: uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_api.PlayerResponse'
+      summary: ProfileUUID
+      tags:
+      - player
 swagger: "2.0"
