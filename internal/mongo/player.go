@@ -3,6 +3,7 @@ package mongo
 import (
 	"context"
 	"fmt"
+	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
@@ -26,9 +27,9 @@ func (e PlayerNotFound) Error() string {
 }
 
 type Player struct {
-	Id           PlayerId       `json:"id" bson:"_id"`
-	GenericItems []*GenericItem `json:"generic_items" bson:"generic_items"`
-	GenericPets  []*GenericPet  `json:"generic_pets" bson:"generic_pets"`
+	Id           PlayerId      `json:"id" bson:"_id"`
+	GenericItems []interface{} `json:"generic_items" bson:"generic_items"`
+	GenericPets  []string      `json:"generic_pets" bson:"generic_pets"`
 }
 
 type PlayerId struct {
@@ -54,6 +55,32 @@ func PlayerByUuid(uuid string) (*Player, error) {
 	}
 
 	if err := res.Decode(&player); err != nil {
+		log.Error().Err(err).Msgf("error decoding player with uuid %s", uuid)
+		return nil, err
+	}
+
+	return &player, nil
+}
+
+func PlayerByProfileUuid(uuid string) (*Player, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	filter := bson.M{"_id.profileUuid": uuid}
+
+	var player Player
+	res := playerCollection.FindOne(ctx, filter)
+
+	if res.Err() != nil {
+		if res.Err() == mongo.ErrNoDocuments {
+			return nil, PlayerNotFound{ProfileUuid: uuid}
+		}
+
+		return nil, res.Err()
+	}
+
+	if err := res.Decode(&player); err != nil {
+		log.Error().Err(err).Msgf("error decoding player with profile uuid %s", uuid)
 		return nil, err
 	}
 
