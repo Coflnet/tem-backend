@@ -59,6 +59,19 @@ func playerByUuid(c *gin.Context) {
 		p.GenericPets = player.GenericPets
 	}(uuid, player, &wg)
 
+	wg.Add(1)
+	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
+		defer wg.Done()
+
+		pets, err := mongo.PetsOfPlayerUuid(uuid)
+		if err != nil {
+			log.Error().Err(err).Msgf("error searching pets for player with uuid %s", u)
+			return
+		}
+
+		p.Pets = pets
+	}(uuid, player, &wg)
+
 	wg.Wait()
 
 	c.JSON(http.StatusOK, player)
@@ -115,6 +128,19 @@ func playerByProfileUuid(c *gin.Context) {
 		p.GenericPets = player.GenericPets
 	}(uuid, player, &wg)
 
+	wg.Add(1)
+	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
+		defer waitGroup.Done()
+
+		pets, err := mongo.PetsOfProfileUuid(uuid)
+		if err != nil {
+			log.Error().Err(err).Msgf("error searching pets for player with uuid %s", uuid)
+			return
+		}
+
+		p.Pets = pets
+	}(uuid, player, &wg)
+
 	wg.Wait()
 	c.JSON(http.StatusOK, player)
 }
@@ -124,4 +150,5 @@ type PlayerResponse struct {
 	GenericItems []interface{}  `json:"generic_items" bson:"generic_items"`
 	GenericPets  []string       `json:"generic_pets" bson:"generic_pets"`
 	Items        []interface{}  `json:"items"`
+	Pets         []*mongo.Pet   `json:"pets"`
 }
