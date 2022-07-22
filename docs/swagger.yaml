@@ -2,68 +2,74 @@ definitions:
   github.com_Coflnet_tem-backend_internal_api.PlayerResponse:
     properties:
       generic_items:
-        items:
-          $ref: '#/definitions/mongo.GenericItem'
+        items: {}
         type: array
       generic_pets:
         items:
-          $ref: '#/definitions/mongo.GenericPet'
+          type: string
         type: array
       id:
         $ref: '#/definitions/mongo.PlayerId'
       items:
+        items: {}
+        type: array
+      pets:
         items:
-          $ref: '#/definitions/mongo.Item'
+          $ref: '#/definitions/mongo.Pet'
         type: array
     type: object
   internal_api.PlayerResponse:
     properties:
       generic_items:
-        items:
-          $ref: '#/definitions/mongo.GenericItem'
+        items: {}
         type: array
       generic_pets:
         items:
-          $ref: '#/definitions/mongo.GenericPet'
+          type: string
         type: array
       id:
         $ref: '#/definitions/mongo.PlayerId'
       items:
+        items: {}
+        type: array
+      pets:
         items:
-          $ref: '#/definitions/mongo.Item'
+          $ref: '#/definitions/mongo.Pet'
         type: array
     type: object
-  mongo.GenericItem:
+  mongo.Owner:
     properties:
-      enchantments: {}
-      extra_attributes: {}
-      id:
+      player_uuid:
         type: string
-      item_id:
-        type: string
-      rarity:
-        type: string
-      reforge:
+      profile_uuid:
         type: string
     type: object
-  mongo.GenericPet:
+  mongo.Pet:
     properties:
       candy:
         type: integer
+      current_owner:
+        $ref: '#/definitions/mongo.Owner'
       held_item:
         type: string
       id:
         type: string
+      last_checked:
+        type: string
       level:
         type: integer
+      location:
+        type: string
       name:
         type: string
+      previous_owner:
+        $ref: '#/definitions/mongo.Owner'
       rarity:
         type: string
       skin:
         type: string
-    type: object
-  mongo.Item:
+      start:
+        type: string
     type: object
   mongo.PlayerId:
     type: object

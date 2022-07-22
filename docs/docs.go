@@ -55,14 +55,12 @@ const docTemplate = `{
             "properties": {
                 "generic_items": {
                     "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/mongo.GenericItem"
-                    }
+                    "items": {}
                 },
                 "generic_pets": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/mongo.GenericPet"
+                        "type": "string"
                     }
                 },
                 "id": {
@@ -70,8 +68,12 @@ const docTemplate = `{
                 },
                 "items": {
                     "type": "array",
+                    "items": {}
+                },
+                "pets": {
+                    "type": "array",
                     "items": {
-                        "$ref": "#/definitions/mongo.Item"
+                        "$ref": "#/definitions/mongo.Pet"
                     }
                 }
             }
@@ -81,14 +83,12 @@ const docTemplate = `{
             "properties": {
                 "generic_items": {
                     "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/mongo.GenericItem"
-                    }
+                    "items": {}
                 },
                 "generic_pets": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/mongo.GenericPet"
+                        "type": "string"
                     }
                 },
                 "id": {
@@ -96,36 +96,35 @@ const docTemplate = `{
                 },
                 "items": {
                     "type": "array",
+                    "items": {}
+                },
+                "pets": {
+                    "type": "array",
                     "items": {
-                        "$ref": "#/definitions/mongo.Item"
+                        "$ref": "#/definitions/mongo.Pet"
                     }
                 }
             }
         },
-        "mongo.GenericItem": {
+        "mongo.Owner": {
             "type": "object",
             "properties": {
-                "enchantments": {},
-                "extra_attributes": {},
-                "id": {
+                "player_uuid": {
                     "type": "string"
                 },
-                "item_id": {
-                    "type": "string"
-                },
-                "rarity": {
-                    "type": "string"
-                },
-                "reforge": {
+                "profile_uuid": {
                     "type": "string"
                 }
             }
         },
-        "mongo.GenericPet": {
+        "mongo.Pet": {
             "type": "object",
             "properties": {
                 "candy": {
                     "type": "integer"
+                },
+                "current_owner": {
+                    "$ref": "#/definitions/mongo.Owner"
                 },
                 "held_item": {
                     "type": "string"
@@ -133,22 +132,31 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "last_checked": {
+                    "type": "string"
+                },
                 "level": {
                     "type": "integer"
                 },
+                "location": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
+                },
+                "previous_owner": {
+                    "$ref": "#/definitions/mongo.Owner"
                 },
                 "rarity": {
                     "type": "string"
                 },
                 "skin": {
                     "type": "string"
+                },
+                "start": {
+                    "type": "string"
                 }
             }
-        },
-        "mongo.Item": {
-            "type": "object"
         },
         "mongo.PlayerId": {
             "type": "object"
