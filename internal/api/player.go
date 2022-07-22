@@ -123,6 +123,5 @@ type PlayerResponse struct {
 	Id           mongo.PlayerId `json:"id" bson:"_id"`
 	GenericItems []interface{}  `json:"generic_items" bson:"generic_items"`
 	GenericPets  []string       `json:"generic_pets" bson:"generic_pets"`
-
-	Items []*mongo.Item `json:"items"`
+	Items        []interface{}  `json:"items"`
 }
