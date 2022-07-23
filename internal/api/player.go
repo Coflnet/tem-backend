@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-// Player
+// Player By UUID
 // @Summary PlayerUUID
 // @Description get a player by his player uuid
 // @Tags player
@@ -77,15 +77,15 @@ func playerByUuid(c *gin.Context) {
 	c.JSON(http.StatusOK, player)
 }
 
-// Player
-// @Summary PlayerUUID
-// @Description get a player by his player uuid
+// Player by Profile UUID
+// @Summary ProfileUUID
+// @Description get a player by his profile uuid
 // @Tags player
 // @Accept json
 // @Produce json
 // @Param uuid path string true "uuid"
 // @Success 200 {object} PlayerResponse
-// @Router /player/{uuid} [get]
+// @Router /playerProfile/{uuid} [get]
 func playerByProfileUuid(c *gin.Context) {
 	uuid := c.Param("uuid")
 
