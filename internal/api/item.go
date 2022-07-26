@@ -23,7 +23,7 @@ type ItemResponse struct {
 // @Produce json
 // @Success 200 {object} mongo.Item
 // @Router /item/{uuid} [get]
-func ItemByUuid(c *gin.Context) {
+func itemByUuid(c *gin.Context) {
 	id := c.Param("uuid")
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "uuid is required"})
@@ -31,6 +31,12 @@ func ItemByUuid(c *gin.Context) {
 	}
 
 	item, err := mongo.ItemById(id)
+
+	if serr, ok := err.(*mongo.ItemNotFoundError); ok {
+		c.JSON(http.StatusNotFound, gin.H{"error": serr.Error()})
+		return
+	}
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -49,7 +55,7 @@ func ItemByUuid(c *gin.Context) {
 // @Query offset path string true "offset"
 // @Success 200 {object} ItemResponse
 // @Router /items/{id} [get]
-func ItemsById(c *gin.Context) {
+func itemsById(c *gin.Context) {
 	id := c.Param("id")
 	offsetStr := c.Query("offset")
 

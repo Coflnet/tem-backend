@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -22,6 +23,14 @@ type Item struct {
 	Start           time.Time     `bson:"start" json:"start"`
 	Reforge         string        `bson:"reforge" json:"reforge"`
 	Rarity          string        `bson:"rarity" json:"rarity"`
+}
+
+type ItemNotFoundError struct {
+	Id string
+}
+
+func (i *ItemNotFoundError) Error() string {
+	return fmt.Sprintf("item %s not found", i.Id)
 }
 
 func ItemsForPlayerUuid(uuid string) ([]interface{}, error) {
@@ -88,8 +97,15 @@ func ItemById(id string) (*Item, error) {
 	defer cancel()
 
 	var item Item
-	if err := itemCollection.FindOne(ctx, filter).Decode(&item); err != nil {
-		log.Error().Err(err).Msgf("error decoding item %s", id)
+	res := itemCollection.FindOne(ctx, filter)
+
+	if err := res.Decode(&item); err != nil {
+
+		if err == mongo.ErrNoDocuments {
+			return nil, &ItemNotFoundError{Id: id}
+		}
+
+		log.Error().Err(err).Msgf("error decoding item for id %s", id)
 		return nil, err
 	}
 

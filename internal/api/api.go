@@ -28,5 +28,8 @@ func setupRouter() *gin.Engine {
 	r.GET("/api/tem/player/:uuid", playerByUuid)
 	r.GET("/api/tem/playerProfile/:uuid", playerByProfileUuid)
 
+	r.GET("/api/tem/item/:uuid", itemByUuid)
+	r.GET("/api/tem/items/:id", itemsById)
+
 	return r
 }
