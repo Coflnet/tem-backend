@@ -114,8 +114,12 @@ func ItemById(id string) (*Item, error) {
 
 func ItemsById(id string, offset int64) ([]*Item, error) {
 
-	filter := bson.M{"_id": id}
-	opt := options.Find().SetLimit(1000).SetSkip(offset)
+	filter := bson.M{"itemId": id}
+	opt := options.Find().
+		SetSort(bson.D{{"created_at", -1}}).
+		SetLimit(1000).
+		SetSkip(offset)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -144,7 +148,7 @@ func ItemsById(id string, offset int64) ([]*Item, error) {
 }
 
 func ItemsCountById(id string) (int64, error) {
-	filter := bson.M{"_id": id}
+	filter := bson.M{"itemId": id}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 

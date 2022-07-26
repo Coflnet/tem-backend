@@ -45,9 +45,9 @@ func itemByUuid(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-// Item by uuid
-// @Summary ItemByUUID
-// @Description returns the item by its uuid
+// Item by itemId
+// @Summary ItemByItemId
+// @Description returns the amount of items founds with an id and 1000 items with that id, sorted by creation time backwards (offset is possible)
 // @Tags items
 // @Accept json
 // @Produce json
@@ -92,6 +92,7 @@ func itemsById(c *gin.Context) {
 		r.Items = val
 	}(&response, &wg, id, offset)
 
+	wg.Add(1)
 	go func(r *ItemResponse, waitGroup *sync.WaitGroup) {
 		defer waitGroup.Done()
 

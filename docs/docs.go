@@ -41,7 +41,7 @@ const docTemplate = `{
         },
         "/items/{id}": {
             "get": {
-                "description": "returns the item by its uuid",
+                "description": "returns the amount of items founds with an id and 1000 items with that id, sorted by creation time backwards (offset is possible)",
                 "consumes": [
                     "application/json"
                 ],
@@ -51,7 +51,7 @@ const docTemplate = `{
                 "tags": [
                     "items"
                 ],
-                "summary": "ItemByUUID",
+                "summary": "ItemByItemId",
                 "parameters": [
                     {
                         "type": "string",
@@ -97,7 +97,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_api.PlayerResponse"
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse"
                         }
                     }
                 }
@@ -129,7 +129,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_api.PlayerResponse"
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse"
                         }
                     }
                 }
@@ -231,7 +231,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "colour": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "createdAt": {
                     "type": "string"
