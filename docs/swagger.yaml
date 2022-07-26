@@ -1,4 +1,15 @@
 definitions:
+  github.com_Coflnet_tem-backend_internal_api.ItemResponse:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/mongo.Item'
+        type: array
+      offset:
+        type: integer
+    type: object
   github.com_Coflnet_tem-backend_internal_api.PlayerResponse:
     properties:
       generic_items:
@@ -18,6 +29,17 @@ definitions:
           $ref: '#/definitions/mongo.Pet'
         type: array
     type: object
+  internal_api.ItemResponse:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/mongo.Item'
+        type: array
+      offset:
+        type: integer
+    type: object
   internal_api.PlayerResponse:
     properties:
       generic_items:
@@ -36,6 +58,31 @@ definitions:
         items:
           $ref: '#/definitions/mongo.Pet'
         type: array
+    type: object
+  mongo.Item:
+    properties:
+      colour:
+        type: string
+      createdAt:
+        type: string
+      currentOwner: {}
+      enchantments: {}
+      extraAttributes: {}
+      id:
+        type: string
+      lastChecked:
+        type: string
+      location:
+        type: string
+      previousOwners:
+        items: {}
+        type: array
+      rarity:
+        type: string
+      reforge:
+        type: string
+      start:
+        type: string
     type: object
   mongo.Owner:
     properties:
@@ -76,6 +123,42 @@ definitions:
 info:
   contact: {}
 paths:
+  /item/{uuid}:
+    get:
+      consumes:
+      - application/json
+      description: returns the item by its uuid
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mongo.Item'
+      summary: ItemByUUID
+      tags:
+      - items
+  /items/{id}:
+    get:
+      consumes:
+      - application/json
+      description: returns the item by its uuid
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse'
+      summary: ItemByUUID
+      tags:
+      - items
   /player/{uuid}:
     get:
       consumes:

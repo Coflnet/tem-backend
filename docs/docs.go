@@ -16,6 +16,61 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/item/{uuid}": {
+            "get": {
+                "description": "returns the item by its uuid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "ItemByUUID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mongo.Item"
+                        }
+                    }
+                }
+            }
+        },
+        "/items/{id}": {
+            "get": {
+                "description": "returns the item by its uuid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "ItemByUUID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/player/{uuid}": {
             "get": {
                 "description": "get a player by his player uuid",
@@ -82,6 +137,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "github.com_Coflnet_tem-backend_internal_api.ItemResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/mongo.Item"
+                    }
+                },
+                "offset": {
+                    "type": "integer"
+                }
+            }
+        },
         "github.com_Coflnet_tem-backend_internal_api.PlayerResponse": {
             "type": "object",
             "properties": {
@@ -110,6 +182,23 @@ const docTemplate = `{
                 }
             }
         },
+        "internal_api.ItemResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/mongo.Item"
+                    }
+                },
+                "offset": {
+                    "type": "integer"
+                }
+            }
+        },
         "internal_api.PlayerResponse": {
             "type": "object",
             "properties": {
@@ -135,6 +224,42 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/mongo.Pet"
                     }
+                }
+            }
+        },
+        "mongo.Item": {
+            "type": "object",
+            "properties": {
+                "colour": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "currentOwner": {},
+                "enchantments": {},
+                "extraAttributes": {},
+                "id": {
+                    "type": "string"
+                },
+                "lastChecked": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "previousOwners": {
+                    "type": "array",
+                    "items": {}
+                },
+                "rarity": {
+                    "type": "string"
+                },
+                "reforge": {
+                    "type": "string"
+                },
+                "start": {
+                    "type": "string"
                 }
             }
         },
