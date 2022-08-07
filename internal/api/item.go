@@ -21,6 +21,7 @@ type ItemResponse struct {
 // @Tags items
 // @Accept json
 // @Produce json
+// @Param uuid path string true "id"
 // @Success 200 {object} mongo.Item
 // @Router /item/{uuid} [get]
 func itemByUuid(c *gin.Context) {
@@ -88,6 +89,7 @@ func itemsById(c *gin.Context) {
 			log.Error().Err(e).Msgf("error searching items for player with id %s", id)
 			return
 		}
+		log.Info().Msgf("got %d items for player with id %s", len(val), id)
 
 		r.Items = val
 	}(&response, &wg, id, offset)
@@ -101,6 +103,8 @@ func itemsById(c *gin.Context) {
 			log.Error().Err(e).Msgf("error searching items for player with id %s", id)
 			return
 		}
+
+		log.Info().Msgf("counted %d items for player with id %s", count, id)
 
 		r.Count = count
 	}(&response, &wg)
