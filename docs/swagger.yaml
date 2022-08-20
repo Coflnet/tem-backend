@@ -128,6 +128,12 @@ paths:
       consumes:
       - application/json
       description: returns the item by its uuid
+      parameters:
+      - description: id
+        in: path
+        name: uuid
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -156,7 +162,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse'
+            $ref: '#/definitions/internal_api.ItemResponse'
       summary: ItemByItemId
       tags:
       - items
@@ -177,7 +183,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse'
+            $ref: '#/definitions/internal_api.PlayerResponse'
       summary: PlayerUUID
       tags:
       - player
@@ -198,7 +204,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse'
+            $ref: '#/definitions/internal_api.PlayerResponse'
       summary: ProfileUUID
       tags:
       - player
