@@ -5,11 +5,13 @@ import (
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.opentelemetry.io/contrib/instrumentation/go.mongodb.org/mongo-driver/mongo/otelmongo"
 	"os"
 	"time"
 )
 
 var (
+	client           *mongo.Client
 	itemCollection   *mongo.Collection
 	playerCollection *mongo.Collection
 	petsCollection   *mongo.Collection
@@ -19,7 +21,12 @@ func Start() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoUrl()))
+	opt := options.Client()
+	opt.Monitor = otelmongo.NewMonitor()
+	opt.ApplyURI(mongoUrl())
+
+	var err error
+	client, err = mongo.Connect(ctx, opt)
 	if err != nil {
 		log.Panic().Err(err).Msg("Error connecting to mongo")
 	}
@@ -29,8 +36,10 @@ func Start() {
 	petsCollection = client.Database("inventories").Collection("pets")
 }
 
-func Stop() {
-
+func Stop() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	return client.Disconnect(ctx)
 }
 
 func mongoUrl() string {

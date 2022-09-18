@@ -28,10 +28,7 @@ type Pet struct {
 	LastChecked   time.Time `json:"last_checked" bson:"lastChecked"`
 }
 
-func PetsOfPlayerUuid(uuid string) ([]*Pet, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func PetsOfPlayerUuid(ctx context.Context, uuid string) ([]*Pet, error) {
 	filter := bson.M{"currentOwner.playerUuid": uuid}
 
 	var pets []*Pet
@@ -53,10 +50,7 @@ func PetsOfPlayerUuid(uuid string) ([]*Pet, error) {
 	return pets, nil
 }
 
-func PetsOfProfileUuid(uuid string) ([]*Pet, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func PetsOfProfileUuid(ctx context.Context, uuid string) ([]*Pet, error) {
 	filter := bson.M{"currentOwner.profileUuid": uuid}
 
 	var pets []*Pet

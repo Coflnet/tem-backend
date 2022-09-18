@@ -15,5 +15,6 @@ workdir: /usr/src/app
 environment:
 - SLOWDOWN_MS=10
 - MONGO_URL=mongodb://root:root@mongo.mongo:27017
+- JAEGER_AGENT_HOST=simplest-collector.observability:4317
 forward:
 - 8080:8080

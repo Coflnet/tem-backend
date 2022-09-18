@@ -33,10 +33,7 @@ func (i *ItemNotFoundError) Error() string {
 	return fmt.Sprintf("item %s not found", i.Id)
 }
 
-func ItemsForPlayerUuid(uuid string) ([]interface{}, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func ItemsForPlayerUuid(ctx context.Context, uuid string) ([]interface{}, error) {
 	filter := bson.M{"currentOwner.playerUuid": uuid}
 
 	var items []interface{}
@@ -47,12 +44,12 @@ func ItemsForPlayerUuid(uuid string) ([]interface{}, error) {
 		return nil, err
 	}
 
-	defer func(cur *mongo.Cursor, ctx context.Context) {
+	defer func(cur *mongo.Cursor) {
 		err := cur.Close(ctx)
 		if err != nil {
 			log.Error().Err(err).Msgf("error closing cursor for player uuid %s", uuid)
 		}
-	}(cur, ctx)
+	}(cur)
 
 	if err := cur.All(ctx, &items); err != nil {
 		log.Error().Err(err).Msgf("error decoding items for player uuid %s", uuid)
@@ -62,10 +59,7 @@ func ItemsForPlayerUuid(uuid string) ([]interface{}, error) {
 	return items, nil
 }
 
-func ItemsForProfileUuid(uuid string) ([]interface{}, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func ItemsForProfileUuid(ctx context.Context, uuid string) ([]interface{}, error) {
 	filter := bson.M{"currentOwner.profileUuid": uuid}
 
 	var items []interface{}
@@ -76,12 +70,12 @@ func ItemsForProfileUuid(uuid string) ([]interface{}, error) {
 		return nil, err
 	}
 
-	defer func(cur *mongo.Cursor, ctx context.Context) {
+	defer func(cur *mongo.Cursor) {
 		err := cur.Close(ctx)
 		if err != nil {
 			log.Error().Err(err).Msgf("error closing cursor for profile uuid %s", uuid)
 		}
-	}(cur, ctx)
+	}(cur)
 
 	if err := cur.All(ctx, &items); err != nil {
 		log.Error().Err(err).Msgf("error decoding items for profile uuid %s", uuid)
@@ -91,10 +85,8 @@ func ItemsForProfileUuid(uuid string) ([]interface{}, error) {
 	return items, nil
 }
 
-func ItemById(id string) (*Item, error) {
+func ItemById(ctx context.Context, id string) (*Item, error) {
 	filter := bson.M{"_id": id}
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
 
 	var item Item
 	res := itemCollection.FindOne(ctx, filter)
@@ -112,16 +104,13 @@ func ItemById(id string) (*Item, error) {
 	return &item, nil
 }
 
-func ItemsById(id string, offset int64) ([]*Item, error) {
+func ItemsById(ctx context.Context, id string, offset int64) ([]*Item, error) {
 
 	filter := bson.M{"itemId": id}
 	opt := options.Find().
 		SetSort(bson.D{{"created_at", -1}}).
 		SetLimit(1000).
 		SetSkip(offset)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
 
 	var items []*Item
 	cur, err := itemCollection.Find(ctx, filter, opt)
@@ -132,12 +121,12 @@ func ItemsById(id string, offset int64) ([]*Item, error) {
 	}
 
 	// close cursor
-	defer func(cur *mongo.Cursor, ctx context.Context) {
+	defer func(cur *mongo.Cursor) {
 		err := cur.Close(ctx)
 		if err != nil {
 			log.Error().Err(err).Msgf("error closing cursor for id %s", id)
 		}
-	}(cur, ctx)
+	}(cur)
 
 	if err := cur.All(ctx, &items); err != nil {
 		log.Error().Err(err).Msgf("error decoding items for id %s", id)
@@ -147,10 +136,8 @@ func ItemsById(id string, offset int64) ([]*Item, error) {
 	return items, nil
 }
 
-func ItemsCountById(id string) (int64, error) {
+func ItemsCountById(ctx context.Context, id string) (int64, error) {
 	filter := bson.M{"itemId": id}
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
 
 	count, err := itemCollection.CountDocuments(ctx, filter)
 

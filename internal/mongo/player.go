@@ -6,7 +6,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"time"
 )
 
 type PlayerNotFound struct {
@@ -35,11 +34,7 @@ type Player struct {
 type PlayerId struct {
 }
 
-func PlayerByUuid(uuid string) (*Player, error) {
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func PlayerByUuid(ctx context.Context, uuid string) (*Player, error) {
 	filter := bson.M{"_id.playerUuid": uuid}
 
 	var player Player
@@ -62,10 +57,7 @@ func PlayerByUuid(uuid string) (*Player, error) {
 	return &player, nil
 }
 
-func PlayerByProfileUuid(uuid string) (*Player, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func PlayerByProfileUuid(ctx context.Context, uuid string) (*Player, error) {
 	filter := bson.M{"_id.profileUuid": uuid}
 
 	var player Player

@@ -34,7 +34,7 @@ func itemByUuid(c *gin.Context) {
 		return
 	}
 
-	item, err := mongo.ItemById(id)
+	item, err := mongo.ItemById(c.Request.Context(), id)
 
 	if serr, ok := err.(*mongo.ItemNotFoundError); ok {
 		c.JSON(http.StatusNotFound, gin.H{"error": serr.Error()})
@@ -89,7 +89,8 @@ func itemsById(c *gin.Context) {
 	go func(r *ItemResponse, waitGroup *sync.WaitGroup, i string, o int64) {
 		defer waitGroup.Done()
 
-		val, e := mongo.ItemsById(i, o)
+		val, e := mongo.ItemsById(c.Request.Context(), i, o)
+
 		if e != nil {
 			log.Error().Err(e).Msgf("error searching items for player with id %s", id)
 			return
@@ -103,7 +104,7 @@ func itemsById(c *gin.Context) {
 	go func(r *ItemResponse, waitGroup *sync.WaitGroup) {
 		defer waitGroup.Done()
 
-		count, e := mongo.ItemsCountById(id)
+		count, e := mongo.ItemsCountById(c.Request.Context(), id)
 		if e != nil {
 			log.Error().Err(e).Msgf("error searching items for player with id %s", id)
 			return

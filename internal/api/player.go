@@ -33,7 +33,7 @@ func playerByUuid(c *gin.Context) {
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 		defer waitGroup.Done()
 
-		items, err := mongo.ItemsForPlayerUuid(u)
+		items, err := mongo.ItemsForPlayerUuid(c.Request.Context(), u)
 
 		if err != nil {
 			log.Error().Err(err).Msgf("error searching items for player with uuid %s", u)
@@ -47,7 +47,7 @@ func playerByUuid(c *gin.Context) {
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 		defer waitGroup.Done()
 
-		player, err := mongo.PlayerByUuid(u)
+		player, err := mongo.PlayerByUuid(c.Request.Context(), u)
 		if err != nil {
 			log.Error().Err(err).Msgf("error searching player with uuid %s", u)
 			return
@@ -64,7 +64,7 @@ func playerByUuid(c *gin.Context) {
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 		defer wg.Done()
 
-		pets, err := mongo.PetsOfPlayerUuid(uuid)
+		pets, err := mongo.PetsOfPlayerUuid(c.Request.Context(), uuid)
 		if err != nil {
 			log.Error().Err(err).Msgf("error searching pets for player with uuid %s", u)
 			return
@@ -103,7 +103,7 @@ func playerByProfileUuid(c *gin.Context) {
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 		defer waitGroup.Done()
 
-		items, err := mongo.ItemsForProfileUuid(u)
+		items, err := mongo.ItemsForProfileUuid(c.Request.Context(), u)
 
 		if err != nil {
 			log.Error().Err(err).Msgf("error searching items for player with uuid %s", u)
@@ -117,7 +117,7 @@ func playerByProfileUuid(c *gin.Context) {
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 		defer wg.Done()
 
-		player, err := mongo.PlayerByProfileUuid(uuid)
+		player, err := mongo.PlayerByProfileUuid(c.Request.Context(), uuid)
 		if err != nil {
 			log.Error().Err(err).Msgf("error searching player with uuid %s", uuid)
 			return
@@ -134,7 +134,7 @@ func playerByProfileUuid(c *gin.Context) {
 	go func(u string, p *PlayerResponse, waitGroup *sync.WaitGroup) {
 		defer waitGroup.Done()
 
-		pets, err := mongo.PetsOfProfileUuid(uuid)
+		pets, err := mongo.PetsOfProfileUuid(c.Request.Context(), uuid)
 		if err != nil {
 			log.Error().Err(err).Msgf("error searching pets for player with uuid %s", uuid)
 			return

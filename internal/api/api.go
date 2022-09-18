@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 func StartApi() error {
@@ -24,6 +25,8 @@ func setupRouter() *gin.Engine {
 	docs.SwaggerInfo.BasePath = "/api/tem"
 	docs.SwaggerInfo.Title = "TEM Backend"
 	docs.SwaggerInfo.Version = "1.0"
+
+	r.Use(otelgin.Middleware("tem-backend"))
 
 	r.GET("/api/tem/player/:uuid", playerByUuid)
 	r.GET("/api/tem/playerProfile/:uuid", playerByProfileUuid)
