@@ -19,6 +19,7 @@ import (
 // @Router /player/{uuid} [get]
 func playerByUuid(c *gin.Context) {
 	uuid := c.Param("uuid")
+	c.Writer.Header().Set("Cache-Control", "public, max-age=30, immutable")
 
 	if uuid == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "uuid is required"})
@@ -88,6 +89,7 @@ func playerByUuid(c *gin.Context) {
 // @Router /playerProfile/{uuid} [get]
 func playerByProfileUuid(c *gin.Context) {
 	uuid := c.Param("uuid")
+	c.Writer.Header().Set("Cache-Control", "public, max-age=30, immutable")
 
 	if uuid == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "uuid is required"})

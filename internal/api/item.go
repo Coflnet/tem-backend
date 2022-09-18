@@ -26,6 +26,9 @@ type ItemResponse struct {
 // @Router /item/{uuid} [get]
 func itemByUuid(c *gin.Context) {
 	id := c.Param("uuid")
+
+	c.Writer.Header().Set("Cache-Control", "public, max-age=30, immutable")
+
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "uuid is required"})
 		return
@@ -59,6 +62,8 @@ func itemByUuid(c *gin.Context) {
 func itemsById(c *gin.Context) {
 	id := c.Param("id")
 	offsetStr := c.Query("offset")
+
+	c.Writer.Header().Set("Cache-Control", "public, max-age=30, immutable")
 
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
