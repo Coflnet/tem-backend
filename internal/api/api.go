@@ -29,7 +29,7 @@ func StartApi() error {
 func setupRouter() *gin.Engine {
 	r := gin.Default()
 
-	url := ginSwagger.URL("http://localhost:8080/api/tem/swagger/doc.json") // The url pointing to API definition
+	url := ginSwagger.URL("https://sky.coflnet.com/api/tem/swagger/doc.json") // The url pointing to API definition
 	r.GET("/api/tem/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	r.Use(otelgin.Middleware("tem-backend"))
