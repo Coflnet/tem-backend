@@ -1,7 +1,6 @@
 package api
 
 import (
-	"github.com/Coflnet/tem-backend/docs"
 	_ "github.com/Coflnet/tem-backend/docs"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -15,16 +14,23 @@ func StartApi() error {
 	return r.Run()
 }
 
+// @title           TEM Backend
+// @version         1.0
+// @description     A little backend for the tem db
+
+// @contact.name   Flou21
+// @contact.url    flou.dev
+// @contact.email  muehlhans.f@coflnet.com
+
+// @license.name  AGPL-3.0
+
+// @host      sky.coflnet.com
+// @BasePath  /api/tem/
 func setupRouter() *gin.Engine {
 	r := gin.Default()
 
 	url := ginSwagger.URL("http://localhost:8080/api/tem/swagger/doc.json") // The url pointing to API definition
 	r.GET("/api/tem/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-
-	docs.SwaggerInfo.Host = "localhost:8080"
-	docs.SwaggerInfo.BasePath = "/api/tem"
-	docs.SwaggerInfo.Title = "TEM Backend"
-	docs.SwaggerInfo.Version = "1.0"
 
 	r.Use(otelgin.Middleware("tem-backend"))
 
@@ -33,6 +39,7 @@ func setupRouter() *gin.Engine {
 
 	r.GET("/api/tem/item/:uuid", itemByUuid)
 	r.GET("/api/tem/items/:id", itemsById)
+	r.GET("/api/tem/coflItem/:uid", itemByCofluid)
 
 	return r
 }

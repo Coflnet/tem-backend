@@ -1,3 +1,4 @@
+basePath: /api/tem/
 definitions:
   github.com_Coflnet_tem-backend_internal_api.ItemResponse:
     properties:
@@ -84,6 +85,13 @@ definitions:
       start:
         type: string
     type: object
+  mongo.ItemNotFoundError:
+    properties:
+      coflUid:
+        type: string
+      id:
+        type: string
+    type: object
   mongo.Owner:
     properties:
       player_uuid:
@@ -120,9 +128,51 @@ definitions:
     type: object
   mongo.PlayerId:
     type: object
+host: sky.coflnet.com
 info:
-  contact: {}
+  contact:
+    email: muehlhans.f@coflnet.com
+    name: Flou21
+    url: flou.dev
+  description: A little backend for the tem db
+  license:
+    name: AGPL-3.0
+  title: TEM Backend
+  version: "1.0"
 paths:
+  /coflItem/{uid}:
+    get:
+      consumes:
+      - application/json
+      description: returns the item by its cofl uid
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mongo.Item'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/mongo.ItemNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: ItemByCoflUid
+      tags:
+      - items
   /item/{uuid}:
     get:
       consumes:
@@ -162,7 +212,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/internal_api.ItemResponse'
+            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse'
       summary: ItemByItemId
       tags:
       - items

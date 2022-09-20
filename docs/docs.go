@@ -10,12 +10,69 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Flou21",
+            "url": "flou.dev",
+            "email": "muehlhans.f@coflnet.com"
+        },
+        "license": {
+            "name": "AGPL-3.0"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/coflItem/{uid}": {
+            "get": {
+                "description": "returns the item by its cofl uid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "ItemByCoflUid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mongo.Item"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/mongo.ItemNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/item/{uuid}": {
             "get": {
                 "description": "returns the item by its uuid",
@@ -74,7 +131,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_api.ItemResponse"
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse"
                         }
                     }
                 }
@@ -272,6 +329,17 @@ const docTemplate = `{
                 }
             }
         },
+        "mongo.ItemNotFoundError": {
+            "type": "object",
+            "properties": {
+                "coflUid": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "mongo.Owner": {
             "type": "object",
             "properties": {
@@ -332,12 +400,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "sky.coflnet.com",
+	BasePath:         "/api/tem/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "TEM Backend",
+	Description:      "A little backend for the tem db",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

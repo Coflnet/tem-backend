@@ -27,7 +27,7 @@ type ItemResponse struct {
 func itemByUuid(c *gin.Context) {
 	id := c.Param("uuid")
 
-	c.Writer.Header().Set("Cache-Control", "public, max-age=30, immutable")
+	c.Writer.Header().Set("Cache-Control", "public, max-age=5, immutable")
 
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "uuid is required"})
@@ -63,7 +63,7 @@ func itemsById(c *gin.Context) {
 	id := c.Param("id")
 	offsetStr := c.Query("offset")
 
-	c.Writer.Header().Set("Cache-Control", "public, max-age=30, immutable")
+	c.Writer.Header().Set("Cache-Control", "public, max-age=5, immutable")
 
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
@@ -119,4 +119,42 @@ func itemsById(c *gin.Context) {
 
 	wg.Wait()
 	c.JSON(http.StatusOK, response)
+}
+
+// Item by cofl uid
+// @Summary ItemByCoflUid
+// @Description returns the item by its cofl uid
+// @Tags items
+// @Accept json
+// @Produce json
+// @Param id path string true "id"
+// @Query offset path string true "offset"
+// @Success 200 {object} mongo.Item
+// @Failure 400 {object} interface{}
+// @Failure 404 {object} mongo.ItemNotFoundError
+// @Failure 500 {object} interface{}
+// @Router /coflItem/{uid} [get]
+func itemByCofluid(c *gin.Context) {
+
+	uid := c.Param("uid")
+	c.Writer.Header().Set("Cache-Control", "public, max-age=5, immutable")
+
+	if uid == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "uid is required"})
+		return
+	}
+
+	item, err := mongo.ItemByCoflUid(c.Request.Context(), uid)
+	if serr, ok := err.(*mongo.ItemNotFoundError); ok {
+		c.JSON(http.StatusNotFound, gin.H{"error": serr.Error()})
+		return
+	}
+
+	if err != nil {
+		log.Error().Err(err).Msgf("internal error occured when fetching item with cofl uid %s", uid)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, item)
 }

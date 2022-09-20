@@ -26,7 +26,8 @@ type Item struct {
 }
 
 type ItemNotFoundError struct {
-	Id string
+	Id      string `json:"id,omitempty"`
+	CoflUid string `json:"coflUid,omitempty"`
 }
 
 func (i *ItemNotFoundError) Error() string {
@@ -147,4 +148,24 @@ func ItemsCountById(ctx context.Context, id string) (int64, error) {
 	}
 
 	return count, nil
+}
+
+func ItemByCoflUid(ctx context.Context, uid string) (Item, error) {
+	filter := bson.M{"coflUid": uid}
+
+	var item Item
+	res := itemCollection.FindOne(ctx, filter)
+
+	if err := res.Decode(&item); err != nil {
+
+		if err == mongo.ErrNoDocuments {
+			log.Warn().Msgf("item with cofl uid %s not found", uid)
+			return item, &ItemNotFoundError{CoflUid: uid}
+		}
+
+		log.Error().Err(err).Msgf("error decoding item for cofl uid %s", uid)
+		return item, err
+	}
+
+	return item, nil
 }

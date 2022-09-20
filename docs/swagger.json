@@ -1,9 +1,71 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "A little backend for the tem db",
+        "title": "TEM Backend",
+        "contact": {
+            "name": "Flou21",
+            "url": "flou.dev",
+            "email": "muehlhans.f@coflnet.com"
+        },
+        "license": {
+            "name": "AGPL-3.0"
+        },
+        "version": "1.0"
     },
+    "host": "sky.coflnet.com",
+    "basePath": "/api/tem/",
     "paths": {
+        "/coflItem/{uid}": {
+            "get": {
+                "description": "returns the item by its cofl uid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "ItemByCoflUid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mongo.Item"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/mongo.ItemNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/item/{uuid}": {
             "get": {
                 "description": "returns the item by its uuid",
@@ -62,7 +124,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_api.ItemResponse"
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse"
                         }
                     }
                 }
@@ -256,6 +318,17 @@
                     "type": "string"
                 },
                 "start": {
+                    "type": "string"
+                }
+            }
+        },
+        "mongo.ItemNotFoundError": {
+            "type": "object",
+            "properties": {
+                "coflUid": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 }
             }
