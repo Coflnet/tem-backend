@@ -29,10 +29,12 @@ func StartApi() error {
 func setupRouter() *gin.Engine {
 	r := gin.Default()
 
-	url := ginSwagger.URL("https://sky.coflnet.com/api/tem/swagger/doc.json") // The url pointing to API definition
-	r.GET("/api/tem/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	r.Use(CORSMiddleware())
 
 	r.Use(otelgin.Middleware("tem-backend"))
+
+	url := ginSwagger.URL("https://sky.coflnet.com/api/tem/swagger/doc.json") // The url pointing to API definition
+	r.GET("/api/tem/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	r.GET("/api/tem/player/:uuid", playerByUuid)
 	r.GET("/api/tem/playerProfile/:uuid", playerByProfileUuid)
@@ -42,4 +44,21 @@ func setupRouter() *gin.Engine {
 	r.GET("/api/tem/coflItem/:uid", itemByCofluid)
 
 	return r
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
