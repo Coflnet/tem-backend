@@ -146,9 +146,9 @@ paths:
       - application/json
       description: returns the item by its cofl uid
       parameters:
-      - description: id
+      - description: uid
         in: path
-        name: id
+        name: uid
         required: true
         type: string
       produces:
@@ -212,7 +212,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse'
+            $ref: '#/definitions/internal_api.ItemResponse'
       summary: ItemByItemId
       tags:
       - items

@@ -39,8 +39,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "id",
-                        "name": "id",
+                        "description": "uid",
+                        "name": "uid",
                         "in": "path",
                         "required": true
                     }
@@ -131,7 +131,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.ItemResponse"
+                            "$ref": "#/definitions/internal_api.ItemResponse"
                         }
                     }
                 }

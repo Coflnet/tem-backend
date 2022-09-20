@@ -95,7 +95,6 @@ func itemsById(c *gin.Context) {
 			log.Error().Err(e).Msgf("error searching items for player with id %s", id)
 			return
 		}
-		log.Info().Msgf("got %d items for player with id %s", len(val), id)
 
 		r.Items = val
 	}(&response, &wg, id, offset)
@@ -110,8 +109,6 @@ func itemsById(c *gin.Context) {
 			return
 		}
 
-		log.Info().Msgf("counted %d items for player with id %s", count, id)
-
 		r.Count = count
 	}(&response, &wg)
 
@@ -122,17 +119,16 @@ func itemsById(c *gin.Context) {
 }
 
 // Item by cofl uid
-// @Summary ItemByCoflUid
+// @Summary 	ItemByCoflUid
 // @Description returns the item by its cofl uid
-// @Tags items
-// @Accept json
-// @Produce json
-// @Param id path string true "id"
-// @Query offset path string true "offset"
-// @Success 200 {object} mongo.Item
-// @Failure 400 {object} interface{}
-// @Failure 404 {object} mongo.ItemNotFoundError
-// @Failure 500 {object} interface{}
+// @Tags 		items
+// @Accept 		json
+// @Produce 	json
+// @Param 		uid 	path 		string 					true "uid"
+// @Success 	200 	{object}	mongo.Item
+// @Failure 	400 	{object} 	interface{}
+// @Failure 	404 	{object} 	mongo.ItemNotFoundError
+// @Failure 	500 	{object} 	interface{}
 // @Router /coflItem/{uid} [get]
 func itemByCofluid(c *gin.Context) {
 
