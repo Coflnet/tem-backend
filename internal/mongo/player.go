@@ -27,7 +27,7 @@ func (e PlayerNotFound) Error() string {
 
 type Player struct {
 	Id           PlayerId      `json:"id" bson:"_id"`
-	GenericItems []interface{} `json:"generic_items" bson:"generic_items"`
+	GenericItems []GenericItem `json:"generic_items" bson:"generic_items"`
 	GenericPets  []string      `json:"generic_pets" bson:"generic_pets"`
 }
 

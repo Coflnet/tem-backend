@@ -11,18 +11,23 @@ import (
 )
 
 type Item struct {
-	Id              string        `bson:"_id" json:"id"`
-	Colour          int           `bson:"colour,omitempty" json:"colour"`
-	Enchantment     interface{}   `bson:"enchantments" json:"enchantments"`
-	LastChecked     time.Time     `bson:"lastChecked" json:"lastChecked"`
-	Location        string        `bson:"location" json:"location"`
-	PreviousOwners  []interface{} `bson:"previousOwners" json:"previousOwners"`
-	CurrentOwner    interface{}   `bson:"currentOwner" json:"currentOwner"`
-	ExtraAttributes interface{}   `bson:"extraAttributes" json:"extraAttributes"`
-	CreatedAt       time.Time     `bson:"createdAt" json:"createdAt"`
-	Start           time.Time     `bson:"start" json:"start"`
-	Reforge         string        `bson:"reforge" json:"reforge"`
-	Rarity          string        `bson:"rarity" json:"rarity"`
+	Id              string      `bson:"_id" json:"id"`
+	Colour          int         `bson:"colour,omitempty" json:"colour"`
+	Enchantment     interface{} `bson:"enchantments" json:"enchantments"`
+	LastChecked     time.Time   `bson:"lastChecked" json:"lastChecked"`
+	Location        string      `bson:"location" json:"location"`
+	PreviousOwners  []Owner     `bson:"previousOwners" json:"previousOwners"`
+	CurrentOwner    Owner       `bson:"currentOwner" json:"currentOwner"`
+	ExtraAttributes interface{} `bson:"extraAttributes" json:"extraAttributes"`
+	CreatedAt       time.Time   `bson:"createdAt" json:"createdAt"`
+	Start           time.Time   `bson:"start" json:"start"`
+	Reforge         string      `bson:"reforge" json:"reforge"`
+	Rarity          string      `bson:"rarity" json:"rarity"`
+}
+
+type Owner struct {
+	PlayerUuid  string `bson:"playerUuid" json:"playerUuid"`
+	ProfileUuid string `bson:"profileUuid" json:"profileUuid"`
 }
 
 type ItemNotFoundError struct {
@@ -34,10 +39,10 @@ func (i *ItemNotFoundError) Error() string {
 	return fmt.Sprintf("item %s not found", i.Id)
 }
 
-func ItemsForPlayerUuid(ctx context.Context, uuid string) ([]interface{}, error) {
+func ItemsForPlayerUuid(ctx context.Context, uuid string) ([]Item, error) {
 	filter := bson.M{"currentOwner.playerUuid": uuid}
 
-	var items []interface{}
+	var items []Item
 	cur, err := itemCollection.Find(ctx, filter)
 
 	if err != nil {
@@ -60,10 +65,10 @@ func ItemsForPlayerUuid(ctx context.Context, uuid string) ([]interface{}, error)
 	return items, nil
 }
 
-func ItemsForProfileUuid(ctx context.Context, uuid string) ([]interface{}, error) {
+func ItemsForProfileUuid(ctx context.Context, uuid string) ([]Item, error) {
 	filter := bson.M{"currentOwner.profileUuid": uuid}
 
-	var items []interface{}
+	var items []Item
 	cur, err := itemCollection.Find(ctx, filter)
 
 	if err != nil {

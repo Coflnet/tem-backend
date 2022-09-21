@@ -8,11 +8,6 @@ import (
 	"time"
 )
 
-type Owner struct {
-	PlayerUuid  string `json:"player_uuid" bson:"playerUuid"`
-	ProfileUuid string `json:"profile_uuid" bson:"profileUuid"`
-}
-
 type Pet struct {
 	Id            string    `json:"id" bson:"_id"`
 	Candy         int       `json:"candy" bson:"candy"`

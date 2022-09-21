@@ -148,9 +148,9 @@ func playerByProfileUuid(c *gin.Context) {
 }
 
 type PlayerResponse struct {
-	Id           mongo.PlayerId `json:"id" bson:"_id"`
-	GenericItems []interface{}  `json:"generic_items" bson:"generic_items"`
-	GenericPets  []string       `json:"generic_pets" bson:"generic_pets"`
-	Items        []interface{}  `json:"items"`
-	Pets         []*mongo.Pet   `json:"pets"`
+	Id           mongo.PlayerId      `json:"id" bson:"_id"`
+	GenericItems []mongo.GenericItem `json:"generic_items" bson:"generic_items"`
+	GenericPets  []string            `json:"generic_pets" bson:"generic_pets"`
+	Items        []mongo.Item        `json:"items"`
+	Pets         []*mongo.Pet        `json:"pets"`
 }
