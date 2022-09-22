@@ -12,6 +12,7 @@ import (
 
 type Item struct {
 	Id              string      `bson:"_id" json:"id"`
+	ItemId          string      `bson:"itemId" json:"itemId"`
 	Colour          int         `bson:"colour,omitempty" json:"colour"`
 	Enchantment     interface{} `bson:"enchantments" json:"enchantments"`
 	LastChecked     time.Time   `bson:"lastChecked" json:"lastChecked"`
