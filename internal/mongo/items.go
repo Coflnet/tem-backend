@@ -20,7 +20,7 @@ type Item struct {
 	PreviousOwners  []Owner     `bson:"previousOwners" json:"previousOwners"`
 	CurrentOwner    Owner       `bson:"currentOwner" json:"currentOwner"`
 	ExtraAttributes interface{} `bson:"extraAttributes" json:"extraAttributes"`
-	CreatedAt       time.Time   `bson:"createdAt" json:"createdAt"`
+	CreatedAt       time.Time   `bson:"created_at" json:"createdAt"`
 	Start           time.Time   `bson:"start" json:"start"`
 	Reforge         string      `bson:"reforge" json:"reforge"`
 	Rarity          string      `bson:"rarity" json:"rarity"`
