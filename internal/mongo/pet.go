@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -21,6 +22,14 @@ type Pet struct {
 	Skin          *string   `json:"skin" bson:"skin"`
 	Start         time.Time `json:"start" bson:"start"`
 	LastChecked   time.Time `json:"last_checked" bson:"lastChecked"`
+}
+
+type PetNotFoundError struct {
+	Uuid string `json:"id,omitempty"`
+}
+
+func (p *PetNotFoundError) Error() string {
+	return fmt.Sprintf("pet with id %s not found", p.Uuid)
 }
 
 func PetsOfPlayerUuid(ctx context.Context, uuid string) ([]*Pet, error) {
@@ -65,4 +74,21 @@ func PetsOfProfileUuid(ctx context.Context, uuid string) ([]*Pet, error) {
 	}
 
 	return pets, nil
+}
+
+func PetByUuid(ctx context.Context, uuid string) (Pet, error) {
+	filter := bson.M{"_id": uuid}
+
+	var pet Pet
+	err := petsCollection.FindOne(ctx, filter).Decode(&pet)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return pet, &PetNotFoundError{Uuid: uuid}
+		}
+
+		return pet, err
+	}
+
+	return pet, nil
 }

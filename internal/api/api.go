@@ -43,6 +43,8 @@ func setupRouter() *gin.Engine {
 	r.GET("/api/tem/items/:id", itemsById)
 	r.GET("/api/tem/coflItem/:uid", itemByCofluid)
 
+	r.GET("/api/tem/pet/:uuid", petByUuid)
+
 	return r
 }
 

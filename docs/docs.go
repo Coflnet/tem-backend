@@ -75,7 +75,7 @@ const docTemplate = `{
         },
         "/item/{uuid}": {
             "get": {
-                "description": "returns the item by its uuid",
+                "description": "returns the pet by its uuid",
                 "consumes": [
                     "application/json"
                 ],
@@ -83,7 +83,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "items"
+                    "pets"
                 ],
                 "summary": "ItemByUUID",
                 "parameters": [
@@ -99,7 +99,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/mongo.Item"
+                            "$ref": "#/definitions/mongo.Pet"
                         }
                     }
                 }
@@ -163,7 +163,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_api.PlayerResponse"
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse"
                         }
                     }
                 }
@@ -195,7 +195,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_api.PlayerResponse"
+                            "$ref": "#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse"
                         }
                     }
                 }
@@ -225,7 +225,9 @@ const docTemplate = `{
             "properties": {
                 "generic_items": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                        "$ref": "#/definitions/mongo.GenericItem"
+                    }
                 },
                 "generic_pets": {
                     "type": "array",
@@ -238,7 +240,9 @@ const docTemplate = `{
                 },
                 "items": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                        "$ref": "#/definitions/mongo.Item"
+                    }
                 },
                 "pets": {
                     "type": "array",
@@ -270,7 +274,9 @@ const docTemplate = `{
             "properties": {
                 "generic_items": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                        "$ref": "#/definitions/mongo.GenericItem"
+                    }
                 },
                 "generic_pets": {
                     "type": "array",
@@ -283,13 +289,34 @@ const docTemplate = `{
                 },
                 "items": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                        "$ref": "#/definitions/mongo.Item"
+                    }
                 },
                 "pets": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/mongo.Pet"
                     }
+                }
+            }
+        },
+        "mongo.GenericItem": {
+            "type": "object",
+            "properties": {
+                "enchantments": {},
+                "extra_attributes": {},
+                "id": {
+                    "type": "string"
+                },
+                "item_id": {
+                    "type": "string"
+                },
+                "rarity": {
+                    "type": "string"
+                },
+                "reforge": {
+                    "type": "string"
                 }
             }
         },
@@ -302,10 +329,15 @@ const docTemplate = `{
                 "createdAt": {
                     "type": "string"
                 },
-                "currentOwner": {},
+                "currentOwner": {
+                    "$ref": "#/definitions/mongo.Owner"
+                },
                 "enchantments": {},
                 "extraAttributes": {},
                 "id": {
+                    "type": "string"
+                },
+                "itemId": {
                     "type": "string"
                 },
                 "lastChecked": {
@@ -316,7 +348,9 @@ const docTemplate = `{
                 },
                 "previousOwners": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                        "$ref": "#/definitions/mongo.PreviousOwner"
+                    }
                 },
                 "rarity": {
                     "type": "string"
@@ -343,10 +377,10 @@ const docTemplate = `{
         "mongo.Owner": {
             "type": "object",
             "properties": {
-                "player_uuid": {
+                "playerUuid": {
                     "type": "string"
                 },
-                "profile_uuid": {
+                "profileUuid": {
                     "type": "string"
                 }
             }
@@ -394,6 +428,20 @@ const docTemplate = `{
         },
         "mongo.PlayerId": {
             "type": "object"
+        },
+        "mongo.PreviousOwner": {
+            "type": "object",
+            "properties": {
+                "end": {
+                    "type": "string"
+                },
+                "owner": {
+                    "$ref": "#/definitions/mongo.Owner"
+                },
+                "start": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`

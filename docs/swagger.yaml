@@ -14,7 +14,8 @@ definitions:
   github.com_Coflnet_tem-backend_internal_api.PlayerResponse:
     properties:
       generic_items:
-        items: {}
+        items:
+          $ref: '#/definitions/mongo.GenericItem'
         type: array
       generic_pets:
         items:
@@ -23,7 +24,8 @@ definitions:
       id:
         $ref: '#/definitions/mongo.PlayerId'
       items:
-        items: {}
+        items:
+          $ref: '#/definitions/mongo.Item'
         type: array
       pets:
         items:
@@ -44,7 +46,8 @@ definitions:
   internal_api.PlayerResponse:
     properties:
       generic_items:
-        items: {}
+        items:
+          $ref: '#/definitions/mongo.GenericItem'
         type: array
       generic_pets:
         items:
@@ -53,12 +56,26 @@ definitions:
       id:
         $ref: '#/definitions/mongo.PlayerId'
       items:
-        items: {}
+        items:
+          $ref: '#/definitions/mongo.Item'
         type: array
       pets:
         items:
           $ref: '#/definitions/mongo.Pet'
         type: array
+    type: object
+  mongo.GenericItem:
+    properties:
+      enchantments: {}
+      extra_attributes: {}
+      id:
+        type: string
+      item_id:
+        type: string
+      rarity:
+        type: string
+      reforge:
+        type: string
     type: object
   mongo.Item:
     properties:
@@ -66,17 +83,21 @@ definitions:
         type: integer
       createdAt:
         type: string
-      currentOwner: {}
+      currentOwner:
+        $ref: '#/definitions/mongo.Owner'
       enchantments: {}
       extraAttributes: {}
       id:
+        type: string
+      itemId:
         type: string
       lastChecked:
         type: string
       location:
         type: string
       previousOwners:
-        items: {}
+        items:
+          $ref: '#/definitions/mongo.PreviousOwner'
         type: array
       rarity:
         type: string
@@ -94,9 +115,9 @@ definitions:
     type: object
   mongo.Owner:
     properties:
-      player_uuid:
+      playerUuid:
         type: string
-      profile_uuid:
+      profileUuid:
         type: string
     type: object
   mongo.Pet:
@@ -127,6 +148,15 @@ definitions:
         type: string
     type: object
   mongo.PlayerId:
+    type: object
+  mongo.PreviousOwner:
+    properties:
+      end:
+        type: string
+      owner:
+        $ref: '#/definitions/mongo.Owner'
+      start:
+        type: string
     type: object
 host: sky.coflnet.com
 info:
@@ -177,7 +207,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: returns the item by its uuid
+      description: returns the pet by its uuid
       parameters:
       - description: id
         in: path
@@ -190,10 +220,10 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/mongo.Item'
+            $ref: '#/definitions/mongo.Pet'
       summary: ItemByUUID
       tags:
-      - items
+      - pets
   /items/{id}:
     get:
       consumes:
@@ -233,7 +263,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/internal_api.PlayerResponse'
+            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse'
       summary: PlayerUUID
       tags:
       - player
@@ -254,7 +284,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/internal_api.PlayerResponse'
+            $ref: '#/definitions/github.com_Coflnet_tem-backend_internal_api.PlayerResponse'
       summary: ProfileUUID
       tags:
       - player
