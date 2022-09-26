@@ -11,19 +11,25 @@ import (
 )
 
 type Item struct {
-	Id              string      `bson:"_id" json:"id"`
-	ItemId          string      `bson:"itemId" json:"itemId"`
-	Colour          int         `bson:"colour,omitempty" json:"colour"`
-	Enchantment     interface{} `bson:"enchantments" json:"enchantments"`
-	LastChecked     time.Time   `bson:"lastChecked" json:"lastChecked"`
-	Location        string      `bson:"location" json:"location"`
-	PreviousOwners  []Owner     `bson:"previousOwners" json:"previousOwners"`
-	CurrentOwner    Owner       `bson:"currentOwner" json:"currentOwner"`
-	ExtraAttributes interface{} `bson:"extraAttributes" json:"extraAttributes"`
-	CreatedAt       time.Time   `bson:"created_at" json:"createdAt"`
-	Start           time.Time   `bson:"start" json:"start"`
-	Reforge         string      `bson:"reforge" json:"reforge"`
-	Rarity          string      `bson:"rarity" json:"rarity"`
+	Id              string          `bson:"_id" json:"id"`
+	ItemId          string          `bson:"itemId" json:"itemId"`
+	Colour          int             `bson:"colour,omitempty" json:"colour"`
+	Enchantment     interface{}     `bson:"enchantments" json:"enchantments"`
+	LastChecked     time.Time       `bson:"lastChecked" json:"lastChecked"`
+	Location        string          `bson:"location" json:"location"`
+	PreviousOwners  []PreviousOwner `bson:"previousOwners" json:"previousOwners"`
+	CurrentOwner    Owner           `bson:"currentOwner" json:"currentOwner"`
+	ExtraAttributes interface{}     `bson:"extraAttributes" json:"extraAttributes"`
+	CreatedAt       time.Time       `bson:"created_at" json:"createdAt"`
+	Start           time.Time       `bson:"start" json:"start"`
+	Reforge         string          `bson:"reforge" json:"reforge"`
+	Rarity          string          `bson:"rarity" json:"rarity"`
+}
+
+type PreviousOwner struct {
+	Start time.Time `bson:"start" json:"start"`
+	End   time.Time `bson:"end" json:"end"`
+	Owner Owner     `bson:"owner" json:"owner"`
 }
 
 type Owner struct {
