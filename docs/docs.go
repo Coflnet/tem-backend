@@ -75,7 +75,7 @@ const docTemplate = `{
         },
         "/item/{uuid}": {
             "get": {
-                "description": "returns the pet by its uuid",
+                "description": "returns the item by its uuid",
                 "consumes": [
                     "application/json"
                 ],
@@ -83,7 +83,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "pets"
+                    "items"
                 ],
                 "summary": "ItemByUUID",
                 "parameters": [
@@ -99,7 +99,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/mongo.Pet"
+                            "$ref": "#/definitions/mongo.Item"
                         }
                     }
                 }
@@ -132,6 +132,38 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/internal_api.ItemResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pet/{uuid}": {
+            "get": {
+                "description": "returns the pet by its uuid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pets"
+                ],
+                "summary": "ItemByUUID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mongo.Pet"
                         }
                     }
                 }

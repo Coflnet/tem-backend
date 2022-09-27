@@ -207,7 +207,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: returns the pet by its uuid
+      description: returns the item by its uuid
       parameters:
       - description: id
         in: path
@@ -220,10 +220,10 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/mongo.Pet'
+            $ref: '#/definitions/mongo.Item'
       summary: ItemByUUID
       tags:
-      - pets
+      - items
   /items/{id}:
     get:
       consumes:
@@ -246,6 +246,27 @@ paths:
       summary: ItemByItemId
       tags:
       - items
+  /pet/{uuid}:
+    get:
+      consumes:
+      - application/json
+      description: returns the pet by its uuid
+      parameters:
+      - description: id
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mongo.Pet'
+      summary: ItemByUUID
+      tags:
+      - pets
   /player/{uuid}:
     get:
       consumes:

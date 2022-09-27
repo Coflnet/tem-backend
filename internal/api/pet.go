@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Param uuid path string true "id"
 // @Success 200 {object} mongo.Pet
-// @Router /item/{uuid} [get]
+// @Router /pet/{uuid} [get]
 func petByUuid(c *gin.Context) {
 	id := c.Param("uuid")
 
